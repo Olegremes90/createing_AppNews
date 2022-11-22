@@ -1,0 +1,9 @@
+User.objects.create(username='somebody')
+Category.objects.create(theme=...)
+Author.objects.get(id=...)
+Post.objects.get(id=...).title, text, grade, authors_id...
+Post.objects.get(id=...).category.add(Category.objects.get(id=...))
+Comment.objects.create(posts=Post.objects.get(id=...), users=Author.objects.get(id=1).user, text_comment='...A'
+Post.objects.create(authors=Author.objects.get(id=...), content_choice='...', title='...', text='...')
+Comment.objects.get(id=2).like()
+Author.objects.order_by('-rating')[:1]

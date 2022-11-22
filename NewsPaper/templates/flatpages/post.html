@@ -1,0 +1,21 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+{% load censor %}
+<!-- Название у нас будет Product -->
+{% block title %}
+Post
+{% endblock title %}
+{% block content %}
+   <h1>Новость</h1>
+   <hr>
+       <table>
+           <tr>
+               <td>Название</td>
+               <td>{{ post.title }}</td>
+               <td>Текст</td>
+               <td>{{ post.text|censor }}</td>
+               <td>Дата загрузки</td>
+               <td>{{ post.time_creation|date:'M d Y' }}</td>
+           </tr>
+       </table>
+{% endblock content %}

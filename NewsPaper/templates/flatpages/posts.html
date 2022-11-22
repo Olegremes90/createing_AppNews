@@ -1,0 +1,40 @@
+{% extends 'flatpages/default.html' %}
+{% load censor %}
+
+{% block title %}
+Posts
+{% endblock title %}
+
+{% block content %}
+   <h1>Все Новости</h1>
+   <!-- Используем переданную из представления переменную time_now
+   и применяем к ней фильтр date. По назначению этот фильтр очень похож
+   на метод strftime у объекта datetime в Python — вывод времени
+   в указанном формате. -->
+   <h3>{{ time_now|date:'M d Y' }}</h3>
+   <hr>
+   {% if posts %}
+       <table>
+           <tr>
+               <td>Дата публикации</td>
+               <td>Категория</td>
+               <td>Название</td>
+               <td>Текст</td>
+               <td>Рейтинг</td>
+           </tr>
+
+           {% for post in posts %}
+           <tr>
+               <td>{{ post.time_creation|date:'M d Y' }}</td>
+               <td>{{ post.content_choice }}</td>
+               <td>{{ post.title|censor }}</td>
+               <td>{{ post.text|censor }}</td>
+               <td>{{ post.grade }}</td>
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>Новостей нет!</h2>
+   {% endif %}
+{% endblock content %}
