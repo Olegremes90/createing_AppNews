@@ -5,7 +5,7 @@ from django.db.models import Sum
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    rating = models.FloatField(default=0)
+    rating = models.SmallIntegerField(default=0)
 
     def update_rating(self):
         postRat = self.post_set.aggregate(postRating=Sum('grade'))
@@ -35,13 +35,10 @@ class Post(models.Model):
     category = models.ManyToManyField('Category', through='PostCategory')
     title = models.CharField(max_length=128)
     text = models.TextField()
-    grade = models.FloatField(default=0)
+    grade = models.SmallIntegerField(default=0)
 
     def preview(self):
         return self.text[0:123] + '...'
-
-    def __str__(self):
-        return f'{self.title.title()}: {self.text[:20]}'
 
     def like(self):
         self.grade += 1
@@ -64,17 +61,18 @@ class Comment(models.Model):
     posts = models.ForeignKey(Post, on_delete=models.CASCADE)
     users = models.ForeignKey(User, on_delete=models.CASCADE)
     text_comment = models.TextField()
-    time = models.DateTimeField(auto_now_add=True)
-    comment_rating = models.SmallIntegerField(default=0)
+    time = models.DateField(auto_now_add=True)
+    grade = models.SmallIntegerField(default=0)
 
     def like(self):
-        self.comment_rating +=1
+        self.grade +=1
         self.save()
 
     def dislike(self):
-        self.comment_rating -=1
+        self.grade -=1
         self.save()
-
+    def preview(self):
+        return self.text[0:123] + '...'
 
 
 

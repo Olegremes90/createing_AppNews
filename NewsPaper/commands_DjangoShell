@@ -1,4 +1,5 @@
 User.objects.create(username='somebody')
+Post.objects.get.all()
 Category.objects.create(theme=...)
 Author.objects.get(id=...)
 Post.objects.get(id=...).title, text, grade, authors_id...
@@ -7,3 +8,7 @@ Comment.objects.create(posts=Post.objects.get(id=...), users=Author.objects.get(
 Post.objects.create(authors=Author.objects.get(id=...), content_choice='...', title='...', text='...')
 Comment.objects.get(id=2).like()
 Author.objects.order_by('-rating')[:1]
+Comment.objects.create(posts=Post.objects.get(id=3), users=Author.objects.get(id=3).user, text_comment='comment')
+for i in s1:
+       i.rating
+       i.user.username
