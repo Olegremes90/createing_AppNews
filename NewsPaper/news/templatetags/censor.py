@@ -4,7 +4,7 @@ register = template.Library()
 
 @register.filter()
 def censor(value):
-   forbidden_words = ['богатый', 'слабый', 'арбуз', 'мира', 'сборной', 'somebigtext']
+   forbidden_words = ['богатый', 'историю,', 'арбуз', 'мира', 'сборных', "переработка"]
    if not isinstance(value, str):
       raise TypeError(f"unresolved type '{type(value)}' expected type 'str' ")
    for word in value.split():
