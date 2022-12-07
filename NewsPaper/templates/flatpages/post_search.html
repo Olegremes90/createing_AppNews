@@ -2,51 +2,35 @@
 {% load censor %}
 
 {% block title %}
-Posts
+Search
 {% endblock title %}
 
 {% block content %}
-   <h1>Все Новости</h1>
+   <h1>Поиск</h1>
    <!-- Используем переданную из представления переменную time_now
    и применяем к ней фильтр date. По назначению этот фильтр очень похож
    на метод strftime у объекта datetime в Python — вывод времени
    в указанном формате. -->
    <form action="" method="get">
-        {{ filterset.form.as_p }}
-        <input type="submit" value="Найти" />
+       {{ filterset.form.as_p }}
+       <input type="submit" value="Найти" />
    </form>
    <hr>
-    {# Теперь будем проверять не request.user.is_authenticated, а конкретные права #}
-    {% if perms.news.add_post %}
-    <a href="{% url 'post_create' %}">Добавить товар</a>
-    {% endif %}
-   {% if posts %}
+   {% if posts in filterset %}
        <table>
            <tr>
                <td>Дата публикации</td>
                <td>Категория</td>
                <td>Название</td>
                <td>Текст</td>
-               {% if perms.news.change_post or perms.news.delete_post %}
-               <td>Действия</td>
-               {% endif %}
            </tr>
 
-           {% for post in posts %}
+           {% for posts in context_object_name %}
            <tr>
                <td>{{ post.time_creation |date:'D m Y' }}</td>
                <td>{{ post.content_choice }}</td>
                <td>{{ post.title }}</td>
                <td>{{ post.text }}</td>
-               <td>
-                    {# А здесь доступ для каждой ссылки теперь будем проверять отдельно #}
-                    {% if perms.news.change_post %}
-                    <a href="{% url 'post_update' pk=post.id %}">Изменить</a>
-                    {% endif %}
-                    {% if perms.news.delete_post %}
-                    <a href="{% url 'post_delete' post.id %}">Удалить</a>
-                    {% endif %}
-                </td>
            </tr>
            {% endfor %}
 
