@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from datetime import datetime
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from .models import Post, Category
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponse
@@ -10,6 +10,10 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+import logging
+from django.utils.translation import gettext as _
+
+logger = logging.getLogger(__name__)
 
 
 
@@ -133,3 +137,10 @@ def subscribe(request, pk):
 
     message = 'Вы успешно подписались на рассылку новостей категории'
     return render(request, 'flatpages/subscribe.html',{'category': category, 'message': message })
+
+
+class Index(View):
+    def get(self, request):
+        string = _('Hello world')
+
+        return HttpResponse(string)

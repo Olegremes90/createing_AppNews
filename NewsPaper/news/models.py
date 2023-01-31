@@ -59,12 +59,18 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('post_detail', args=[str(self.id)])
 
+    def __str__(self):
+        return self.title
+
 
 
 
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.category
 
 
 class Comment(models.Model):

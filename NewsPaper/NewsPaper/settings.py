@@ -60,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'NewsPaper.urls'
@@ -92,7 +93,7 @@ WSGI_APPLICATION = 'NewsPaper.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite2',
     }
 }
 
@@ -119,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -174,3 +175,124 @@ CACHES = {
         'LOCATION': os.path.join(BASE_DIR, 'cache_files'),
     }
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_logger': False,
+    'style': '{',
+    'formatters': {
+        'simple': {
+            'format': '{asctime} - {levelname} - {message}',
+            'style': '{',
+        },
+        'hard': {
+            'format': '{asctime} - {levelname} - {module} - {message}',
+            'style': '{',
+        },
+        'more_hard': {
+            'format': '{asctime} - {levelname} - {module} - {message} - {pathname}',
+            'style': '{',
+        },
+        'hardly': {
+            'format': '{asctime} - {levelname} - {module} - {message} - {pathname} - {exc_info}',
+            'style': '{',
+        },
+        'most_hard': {
+            'format': '{asctime} - {levelname} - {message} - {pathname} - {exc_info}',
+            'style': '{',
+        }
+    },
+
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+    'handlers': {
+        'error_critical': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filters': ['require_debug_false'],
+            'formatter': 'most_hard',
+            'filename': 'errors.log'
+        },
+        'mail_admin': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'most_hard'
+        },
+        'general': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filters': ['require_debug_false'],
+            'formatter': 'hard',
+            'filename': 'general.log'
+        },
+        'security': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'formatter': 'hard',
+            'filename': 'security.log'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'console_warning': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'more_hard'
+        },
+        'console_error': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class':  'logging.StreamHandler',
+            'formatter': 'hardly'
+        }
+
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'console_error', 'general', 'console_warning'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['mail_admin', 'error_critical'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['mail_admin', 'error_critical'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.template': {
+            'handlers': ['error_critical'],
+            'level': 'ERROR',
+            'propagate': False,
+         },
+        'django.db.backends': {
+            'handlers': ['error_critical'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.security': {
+            'handlers': ['security'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}
+
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale')
+]
